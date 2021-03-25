@@ -8,6 +8,7 @@
             type="text"
             placeholder="John Doe"
             v-model="formData.username"
+            :class="{ error: formError.username }"
           />
         </div>
         <div class="field">
@@ -15,6 +16,7 @@
             type="email"
             placeholder="john@example.com"
             v-model="formData.email"
+            :class="{ error: formError.email }"
           />
         </div>
         <div class="field">
@@ -22,6 +24,7 @@
             type="password"
             placeholder="Password"
             v-model="formData.password"
+            :class="{ error: formError.password }"
           />
         </div>
         <button type="submit" class="ui button fluid primary">
@@ -35,7 +38,9 @@
 
 <script>
 import { ref } from "vue";
+import * as Yup from "yup";
 import BasicLayout from "../layouts/BasicLayout";
+import { string } from "yup/lib/locale";
 
 export default {
   name: "Register",
@@ -46,14 +51,28 @@ export default {
 
   setup(props) {
     let formData = ref({});
+    let formError = ref({});
 
-    const register = () => {
-      console.log("Register user");
-      console.log(formData.value);
+    const schemaForm = Yup.object().shape({
+      username: Yup.string().required(true),
+      email: Yup.string().email(true).required(true),
+      password: Yup.string().required(true),
+    });
+
+    const register = async () => {
+      formError.value = {};
+      try {
+        await schemaForm.validate(formData.value, { abortEarly: false });
+      } catch (error) {
+        error.inner.forEach((err) => {
+          formError.value[err.path] = err.message;
+        });
+      }
     };
 
     return {
       formData,
+      formError,
       register,
     };
   },
