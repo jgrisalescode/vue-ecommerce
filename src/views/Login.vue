@@ -7,7 +7,7 @@
           <input
             type="text"
             placeholder="username"
-            v-model="formData.username"
+            v-model="formData.identifier"
             :class="{ error: formError.identifier }"
           />
         </div>
@@ -28,6 +28,7 @@
         </button>
       </form>
       <router-link to="/register">Create account</router-link>
+      <p v-if="badCredentials" class="red">{{ badCredentials }}</p>
     </div>
   </BasicLayout>
 </template>
@@ -35,7 +36,9 @@
 <script>
 import { ref } from "vue";
 import * as Yup from "yup";
+import { useRouter } from "vue-router";
 import BasicLayout from "../layouts/BasicLayout";
+import { loginApi } from "../api/user";
 
 export default {
   name: "Login",
@@ -48,6 +51,8 @@ export default {
     let formData = ref({});
     let formError = ref({});
     let loading = ref(false);
+    let badCredentials = ref("");
+    const router = useRouter();
 
     const schemaForm = Yup.object().shape({
       identifier: Yup.string().required(true), // Strapi requires the username like identifier
@@ -57,9 +62,19 @@ export default {
     const login = async () => {
       formError.value = {};
       loading.value = true;
+      badCredentials.value = "";
 
       try {
         await schemaForm.validate(formData.value, { abortEarly: false });
+
+        try {
+          const response = await loginApi(formData.value);
+          let errorMessage = "User or password are not valids";
+          if (!response?.jwt) throw errorMessage;
+          router.push("/");
+        } catch (error) {
+          badCredentials.value = error;
+        }
       } catch (error) {
         error.inner.forEach((err) => {
           formError.value[err.path] = err.message;
@@ -73,6 +88,7 @@ export default {
       formData,
       formError,
       loading,
+      badCredentials,
       login,
     };
   },
