@@ -2,15 +2,27 @@
   <BasicLayout>
     <div class="register">
       <h2>User register</h2>
-      <form class="ui form">
+      <form class="ui form" @submit.prevent="register">
         <div class="field">
-          <input type="text" placeholder="John Doe" />
+          <input
+            type="text"
+            placeholder="John Doe"
+            v-model="formData.username"
+          />
         </div>
         <div class="field">
-          <input type="email" placeholder="john@example.com" />
+          <input
+            type="email"
+            placeholder="john@example.com"
+            v-model="formData.email"
+          />
         </div>
         <div class="field">
-          <input type="password" placeholder="Password" />
+          <input
+            type="password"
+            placeholder="Password"
+            v-model="formData.password"
+          />
         </div>
         <button type="submit" class="ui button fluid primary">
           Create account
@@ -22,6 +34,7 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import BasicLayout from "../layouts/BasicLayout";
 
 export default {
@@ -29,6 +42,20 @@ export default {
 
   components: {
     BasicLayout,
+  },
+
+  setup(props) {
+    let formData = ref({});
+
+    const register = () => {
+      console.log("Register user");
+      console.log(formData.value);
+    };
+
+    return {
+      formData,
+      register,
+    };
   },
 };
 </script>
