@@ -6,7 +6,7 @@
         <div class="field">
           <input
             type="text"
-            placeholder="John Doe"
+            placeholder="username"
             v-model="formData.username"
             :class="{ error: formError.username }"
           />
@@ -14,7 +14,7 @@
         <div class="field">
           <input
             type="email"
-            placeholder="john@example.com"
+            placeholder="user@example.com"
             v-model="formData.email"
             :class="{ error: formError.email }"
           />
@@ -22,7 +22,7 @@
         <div class="field">
           <input
             type="password"
-            placeholder="Password"
+            placeholder="password"
             v-model="formData.password"
             :class="{ error: formError.password }"
           />
