@@ -12,7 +12,7 @@
         </router-link>
       </div>
       <div class="right menu">
-        <router-link class="item" to="/login"> Login </router-link>
+        <router-link class="item" to="/login"> Sign in </router-link>
       </div>
     </div>
   </div>
