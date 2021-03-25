@@ -1,6 +1,6 @@
 <template>
   <div class="basic-layout">
-    <h2>MENU...</h2>
+    <Menu />
     <div class="ui container">
       <slot></slot>
     </div>
@@ -8,8 +8,14 @@
 </template>
 
 <script>
+import Menu from "../components/Menu";
+
 export default {
   name: "BasicLayout",
+
+  components: {
+    Menu,
+  },
 };
 </script>
 
