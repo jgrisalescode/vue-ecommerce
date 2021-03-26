@@ -34,11 +34,12 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import * as Yup from "yup";
 import { useRouter } from "vue-router";
 import BasicLayout from "../layouts/BasicLayout";
 import { loginApi } from "../api/user";
+import { setTokenApi, getTokenApi } from "../api/token";
 
 export default {
   name: "Login",
@@ -53,6 +54,11 @@ export default {
     let loading = ref(false);
     let badCredentials = ref("");
     const router = useRouter();
+    const token = getTokenApi();
+
+    onMounted(() => {
+      if (token) return router.push("/");
+    });
 
     const schemaForm = Yup.object().shape({
       identifier: Yup.string().required(true), // Strapi requires the username like identifier
@@ -62,7 +68,7 @@ export default {
     const login = async () => {
       formError.value = {};
       loading.value = true;
-      badCredentials.value = "";
+      badCredentials.value = null;
 
       try {
         await schemaForm.validate(formData.value, { abortEarly: false });
@@ -71,6 +77,7 @@ export default {
           const response = await loginApi(formData.value);
           let errorMessage = "User or password are not valids";
           if (!response?.jwt) throw errorMessage;
+          setTokenApi(response.jwt);
           router.push("/");
         } catch (error) {
           badCredentials.value = error;
