@@ -8,7 +8,12 @@ const getTokenApi = () => {
   return localStorage.getItem(TOKEN)
 }
 
+const deleteTokenApi = () => {
+  return localStorage.removeItem(TOKEN)
+}
+
 export {
   setTokenApi,
-  getTokenApi
+  getTokenApi,
+  deleteTokenApi
 }

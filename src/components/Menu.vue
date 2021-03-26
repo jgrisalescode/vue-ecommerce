@@ -21,7 +21,7 @@
             <i class="shopping cart icon"></i>
           </span>
           <span class="ui item logout">
-            <i class="sign-out icon"></i>
+            <i class="sign-out icon" @click="logout"></i>
           </span>
         </template>
       </div>
@@ -30,15 +30,22 @@
 </template>
 
 <script>
-import { getTokenApi } from "../api/token";
+import { getTokenApi, deleteTokenApi } from "../api/token";
 export default {
   name: "Menu",
 
   setup(props) {
     const token = getTokenApi();
 
+    const logout = () => {
+      deleteTokenApi();
+      // f5
+      location.replace("/");
+    };
+
     return {
       token,
+      logout,
     };
   },
 };
