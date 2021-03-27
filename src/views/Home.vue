@@ -1,6 +1,15 @@
 <template>
   <BasicLayout>
-    <h2>We are at Home</h2>
+    <h1>Latest products</h1>
+    <div class="ui grid">
+      <div
+        class="sixten wide mobile eight wide tablet four wide computer column"
+        v-for="product in products"
+        :key="product.id"
+      >
+        <Product :product="product" />
+      </div>
+    </div>
   </BasicLayout>
 </template>
 
@@ -8,6 +17,7 @@
 // @ is an alias to /src
 import { ref, onMounted } from "vue";
 import BasicLayout from "../layouts/BasicLayout";
+import Product from "../components/Product";
 import { getProducts } from "../api/product";
 
 export default {
@@ -15,6 +25,7 @@ export default {
 
   components: {
     BasicLayout,
+    Product,
   },
 
   setup(props) {
