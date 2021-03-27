@@ -1,7 +1,8 @@
 <template>
+  <div class="cart-dimmer" :class="{ open: showCart }" @click="closeCart" />
   <div class="cart" :class="{ open: showCart }">
     <h2>Cart</h2>
-    <button>Close</button>
+    <button @click="closeCart">Close</button>
   </div>
 </template>
 
@@ -16,14 +17,34 @@ export default {
     const store = useStore();
     const showCart = computed(() => store.state.showCart);
 
+    const closeCart = () => {
+      store.commit("setShowCart", false);
+    };
+
     return {
       showCart,
+      closeCart,
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.cart-dimmer {
+  opacity: 0;
+  transition: opacity 0.5 ease;
+
+  &.open {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    opacity: 0.7;
+  }
+}
+
 .cart {
   position: fixed;
   right: 0;
@@ -35,6 +56,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: transform 0.9s ease;
   transform: translateX(150%);
 
   &.open {
