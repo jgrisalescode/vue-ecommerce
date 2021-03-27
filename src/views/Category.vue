@@ -5,7 +5,9 @@
 </template>
 
 <script>
+import { onMounted } from "vue";
 import BasicLayout from "../layouts/BasicLayout";
+import { getProductsByCategory } from "../api/product";
 
 export default {
   name: "Category",
@@ -19,6 +21,13 @@ export default {
     $route(to, from) {
       console.log(to);
     },
+  },
+
+  setup(props) {
+    onMounted(async () => {
+      const response = await getProductsByCategory("fo");
+      console.log(response);
+    });
   },
 };
 </script>
