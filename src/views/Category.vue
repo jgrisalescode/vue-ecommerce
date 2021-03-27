@@ -1,11 +1,13 @@
 <template>
   <BasicLayout>
     <h1>We are in categories</h1>
+    {{ products }}
   </BasicLayout>
 </template>
 
 <script>
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
 import BasicLayout from "../layouts/BasicLayout";
 import { getProductsByCategory } from "../api/product";
 
@@ -16,18 +18,30 @@ export default {
     BasicLayout,
   },
 
-  // Which route am I?
+  // Which route am I? Stay alert if any route changes
   watch: {
     $route(to, from) {
-      console.log(to);
+      this.getProducts(to.params.category);
     },
   },
 
   setup(props) {
-    onMounted(async () => {
-      const response = await getProductsByCategory("fo");
-      console.log(response);
+    const { params } = useRoute();
+    let products = ref(null);
+
+    onMounted(() => {
+      getProducts(params.category);
     });
+
+    const getProducts = async (category) => {
+      const response = await getProductsByCategory(category);
+      products.value = response;
+    };
+
+    return {
+      getProducts,
+      products,
+    };
   },
 };
 </script>
