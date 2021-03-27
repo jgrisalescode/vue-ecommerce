@@ -1,16 +1,50 @@
 <template>
-  <p>{{ product.name }}</p>
+  <div class="ui card product">
+    <div class="image">
+      <img :src="API_URL + product.image.url" :alt="product.name" />
+    </div>
+    <div class="content">
+      <div class="header">{{ product.name }}</div>
+      <div class="description">{{ product.price }} €</div>
+    </div>
+    <div class="ui button primary">Buy</div>
+  </div>
 </template>
 
 <script>
+import { API_URL } from "../utils/constants";
 export default {
   name: "Product",
 
   props: {
     product: Object,
   },
+
+  setup(props) {
+    return {
+      API_URL,
+    };
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+.product {
+  &:hover {
+    .ui.button {
+      min-height: 26px;
+    }
+  }
+
+  .ui.button {
+    max-height: 0;
+    min-height: 0;
+    overflow: hidden;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: min-height 0.6s ease;
+  }
+}
 </style>
