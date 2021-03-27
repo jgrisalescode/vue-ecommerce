@@ -8,9 +8,10 @@
 </template>
 
 <script>
-import { computed } from "vue";
+import { ref, computed, watchEffect } from "vue";
 import { useStore } from "vuex";
 import CartHeader from "./CartHeader";
+import { getProductsCartApi } from "../../api/cart";
 
 export default {
   name: "Cart",
@@ -22,6 +23,17 @@ export default {
   setup(props) {
     const store = useStore();
     const showCart = computed(() => store.state.showCart);
+    let products = ref(null);
+
+    const getProductsCart = async () => {
+      const response = await getProductsCartApi();
+      products.value = response;
+    };
+
+    watchEffect(() => {
+      showCart.value;
+      getProductsCart();
+    });
 
     const closeCart = () => {
       store.commit("setShowCart", false);
