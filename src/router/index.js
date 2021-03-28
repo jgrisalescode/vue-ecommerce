@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Category from '../views/Category.vue'
+import Cart from '../views/Cart.vue'
 
 const routes = [
   // Order matters in routes
@@ -14,20 +15,26 @@ const routes = [
 
   {
     path: '/login',
-    name: 'login',
+    name: 'Login',
     component: Login
   },
 
   {
     path: '/register',
-    name: 'register',
+    name: 'Register',
     component: Register
   },
 
   {
     path: '/:category',
     component: Category
-  }
+  },
+
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: Cart
+  },
 ]
 
 const router = createRouter({
