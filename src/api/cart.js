@@ -54,9 +54,20 @@ const deleteProductCartApi = (productId) => {
   localStorage.setItem(PRODUCTS, JSON.stringify(products))
 }
 
+const deleteProductsCartApi = (productId) => {
+  const products = getCartApi();
+  const index = products.indexOf(productId);
+  if (index > -1) {
+    products.splice(index, 1);
+    localStorage.setItem(PRODUCTS, JSON.stringify(products))
+    deleteProductsCartApi(productId)
+  }
+}
+
 export {
   addProductCartApi,
   getCartApi,
   getProductsCartApi,
-  deleteProductCartApi
+  deleteProductCartApi,
+  deleteProductsCartApi
 }
