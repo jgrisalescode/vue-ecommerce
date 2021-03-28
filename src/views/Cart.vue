@@ -26,15 +26,25 @@
         </tr>
       </tbody>
     </table>
-    <button class="ui button primary fluid" v-if="products">Checkout</button>
+    <button
+      class="ui button primary fluid"
+      @click="createOrder"
+      v-if="products"
+    >
+      Checkout
+    </button>
     <h3 v-if="!products">There aren't products in the cart ☹</h3>
   </BasicLayout>
 </template>
 
 <script>
 import { ref, onMounted, watchEffect } from "vue";
+import jwtDecode from "jwt-decode";
 import BasicLayout from "../layouts/BasicLayout";
 import { getProductsCartApi, deleteProductsCartApi } from "../api/cart";
+import { createOrderApi } from "../api/order";
+import { getTokenApi } from "../api/token";
+
 export default {
   name: "Cart",
 
@@ -65,10 +75,30 @@ export default {
       reloadCart.value = !reloadCart.value;
     };
 
+    const createOrder = async () => {
+      // getting the user id
+      const token = getTokenApi();
+      const { id } = jwtDecode(token);
+
+      const data = {
+        user: id,
+        totalPayment: getTotal(),
+        data: products.value,
+      };
+
+      try {
+        const response = await createOrderApi(data);
+        console.log("Pedido creado");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     return {
       products,
       getTotal,
       deleteProductsCart,
+      createOrder,
     };
   },
 };
