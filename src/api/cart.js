@@ -47,8 +47,16 @@ const getProductsCartApi = async () => {
   }
 }
 
+const deleteProductCartApi = (productId) => {
+  const products = getCartApi();
+  const index = products.indexOf(productId);
+  if (index > -1) products.splice(index, 1);
+  localStorage.setItem(PRODUCTS, JSON.stringify(products))
+}
+
 export {
   addProductCartApi,
   getCartApi,
-  getProductsCartApi
+  getProductsCartApi,
+  deleteProductCartApi
 }

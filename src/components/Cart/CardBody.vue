@@ -19,7 +19,13 @@
               ➕
             </button>
             <p>{{ product.quantity }}</p>
-            <button class="ui button primary" size="large">➖</button>
+            <button
+              class="ui button primary"
+              size="large"
+              @click="decreaseProductCart(product.id)"
+            >
+              ➖
+            </button>
           </div>
         </div>
       </div>
@@ -29,7 +35,7 @@
 
 <script>
 import { API_URL } from "../../utils/constants";
-import { addProductCartApi } from "../../api/cart";
+import { addProductCartApi, deleteProductCartApi } from "../../api/cart";
 
 export default {
   name: "CardBody",
@@ -45,9 +51,15 @@ export default {
       props.reloadCartFn();
     };
 
+    const decreaseProductCart = (id) => {
+      deleteProductCartApi(id);
+      props.reloadCartFn();
+    };
+
     return {
       API_URL,
       increaseProductCart,
+      decreaseProductCart,
     };
   },
 };
