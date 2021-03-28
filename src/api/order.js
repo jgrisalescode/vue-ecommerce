@@ -18,6 +18,19 @@ const createOrderApi = async data => {
   }
 }
 
+const getOrders = async (userId) => {
+  try {
+    const response = await fetch(
+      `${API_URL}/orders?_where[user]=${userId}&_sort=created_at:desc`
+    )
+    const result = await response.json()
+    return result
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export {
-  createOrderApi
+  createOrderApi,
+  getOrders
 }

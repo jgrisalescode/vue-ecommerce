@@ -4,6 +4,7 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Category from '../views/Category.vue'
 import Cart from '../views/Cart.vue'
+import Orders from '../views/Orders.vue'
 
 const routes = [
   // Order matters in routes
@@ -26,14 +27,20 @@ const routes = [
   },
 
   {
-    path: '/:category',
-    component: Category
-  },
-
-  {
     path: '/cart',
     name: 'Cart',
     component: Cart
+  },
+
+  {
+    path: '/orders',
+    name: 'Orders',
+    component: Orders
+  },
+
+  {
+    path: '/:category',
+    component: Category
   },
 ]
 
