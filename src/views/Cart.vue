@@ -39,9 +39,14 @@
 
 <script>
 import { ref, onMounted, watchEffect } from "vue";
+import { useRouter } from "vue-router";
 import jwtDecode from "jwt-decode";
 import BasicLayout from "../layouts/BasicLayout";
-import { getProductsCartApi, deleteProductsCartApi } from "../api/cart";
+import {
+  getProductsCartApi,
+  deleteProductsCartApi,
+  deleteCartApi,
+} from "../api/cart";
 import { createOrderApi } from "../api/order";
 import { getTokenApi } from "../api/token";
 
@@ -55,6 +60,7 @@ export default {
   setup(props) {
     let products = ref(null);
     let reloadCart = ref(false);
+    const router = useRouter();
 
     watchEffect(async () => {
       reloadCart.value;
@@ -88,7 +94,8 @@ export default {
 
       try {
         const response = await createOrderApi(data);
-        console.log("Pedido creado");
+        deleteCartApi();
+        router.push("/orders");
       } catch (error) {
         console.log(error);
       }

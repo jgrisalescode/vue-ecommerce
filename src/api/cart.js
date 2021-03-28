@@ -64,10 +64,15 @@ const deleteProductsCartApi = (productId) => {
   }
 }
 
+const deleteCartApi = () => {
+  localStorage.removeItem(PRODUCTS)
+}
+
 export {
   addProductCartApi,
   getCartApi,
   getProductsCartApi,
   deleteProductCartApi,
-  deleteProductsCartApi
+  deleteProductsCartApi,
+  deleteCartApi
 }
